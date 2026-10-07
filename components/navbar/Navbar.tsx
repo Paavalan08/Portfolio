@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Download } from "lucide-react";
+import { Magnetic } from "@/components/ui/MagneticButton";
 import { profileData } from "@/data/profile";
 
 const navItems = [
@@ -56,28 +57,30 @@ export function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Monogram Logo */}
-            <a
-              href="#hero"
-              className="group flex items-center gap-3 focus:outline-hidden"
-              aria-label="Varathanathan Paavalan - Home"
-            >
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold text-base flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                <span className="tracking-tight">{profileData.initials}</span>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white ring-1 ring-emerald-500/20" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight">
-                  {profileData.shortName}
-                </span>
-                <span className="text-[11px] text-slate-500 font-medium">
-                  Software Developer
-                </span>
-              </div>
-            </a>
+            {/* Monogram Logo with Magnetic Pull */}
+            <Magnetic strength={10}>
+              <a
+                href="#hero"
+                className="group flex items-center gap-3 focus:outline-hidden"
+                aria-label="Varathanathan Paavalan - Home"
+              >
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold text-base flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                  <span className="tracking-tight">{profileData.initials}</span>
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white ring-1 ring-emerald-500/20" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight">
+                    {profileData.shortName}
+                  </span>
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Software Developer
+                  </span>
+                </div>
+              </a>
+            </Magnetic>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200/80 shadow-xs">
+            <nav className="hidden lg:flex items-center gap-1 bg-white/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-200/80 shadow-xs">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.substring(1);
                 return (
@@ -105,30 +108,34 @@ export function Navbar() {
 
             {/* Action CTA & CV button */}
             <div className="hidden sm:flex items-center gap-3">
-              <a
-                href="/cv/varathanathan-paavalan-cv.pdf"
-                download="varathanathan-paavalan-cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs"
-              >
-                <Download className="w-3.5 h-3.5 text-slate-500" />
-                <span>Download CV</span>
-              </a>
+              <Magnetic strength={10}>
+                <a
+                  href="/cv/varathanathan-paavalan-cv.pdf"
+                  download="varathanathan-paavalan-cv.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Download CV</span>
+                </a>
+              </Magnetic>
 
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-1 px-4 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 active:scale-95 transition-all shadow-sm shadow-indigo-600/25"
-              >
-                <span>Let&apos;s Talk</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+              <Magnetic strength={10}>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-1 px-4 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 active:scale-95 transition-all shadow-sm shadow-indigo-600/25"
+                >
+                  <span>Let&apos;s Talk</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </Magnetic>
             </div>
 
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200/80"
+              className="lg:hidden p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200/80 cursor-pointer"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >

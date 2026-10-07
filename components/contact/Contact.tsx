@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
+import { Magnetic } from "@/components/ui/MagneticButton";
 import { profileData } from "@/data/profile";
 
 interface FormData {
@@ -79,15 +81,15 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      await new Promise((resolve) => setTimeout(resolve, 850));
       setIsSuccess(true);
 
       try {
         confetti({
-          particleCount: 80,
-          spread: 60,
+          particleCount: 90,
+          spread: 70,
           origin: { y: 0.7 },
-          colors: ["#4f46e5", "#6366f1", "#3b82f6", "#10b981"],
+          colors: ["#4f46e5", "#6366f1", "#3b82f6", "#10b981", "#8b5cf6"],
         });
       } catch {
         // graceful if confetti fails
@@ -114,7 +116,10 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 sm:py-32 relative bg-slate-50/70 border-t border-slate-200/80">
+    <section id="contact" className="py-24 sm:py-32 relative bg-slate-50/70 border-t border-slate-200/80 overflow-hidden">
+      {/* Background radial highlight */}
+      <div className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-indigo-100/30 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
           badge="Get in Touch"
@@ -122,22 +127,22 @@ export function Contact() {
           subtitle="Interested in hiring, collaborating on an engineering project, or discussing full-stack opportunities? Reach out directly."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Contact Direct Info Cards (5 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 space-y-6"
+            className="lg:col-span-5 space-y-5"
           >
             {/* Quick Profile Summary Card */}
-            <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+            <SpotlightCard className="p-6 sm:p-8 space-y-6">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 font-mono block mb-1">
                   Direct Contact
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                   {profileData.name}
                 </h3>
                 <p className="text-sm text-slate-500 font-medium">
@@ -146,15 +151,15 @@ export function Contact() {
               </div>
 
               {/* Direct channels */}
-              <div className="space-y-4">
+              <div className="space-y-3.5">
                 {/* Email card */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 group">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 group hover:border-indigo-200 transition-colors">
                   <div className="flex items-center gap-3 overflow-hidden">
                     <div className="p-2.5 rounded-xl bg-indigo-100 text-indigo-700 shrink-0">
                       <Mail className="w-4 h-4" />
                     </div>
                     <div className="overflow-hidden">
-                      <span className="text-[11px] font-semibold text-slate-400 block uppercase">
+                      <span className="text-[11px] font-semibold text-slate-400 block uppercase font-mono">
                         Email Address
                       </span>
                       <a
@@ -182,13 +187,13 @@ export function Contact() {
                 </div>
 
                 {/* Phone card */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 group">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 group hover:border-indigo-200 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="p-2.5 rounded-xl bg-indigo-100 text-indigo-700 shrink-0">
                       <Phone className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[11px] font-semibold text-slate-400 block uppercase">
+                      <span className="text-[11px] font-semibold text-slate-400 block uppercase font-mono">
                         Phone
                       </span>
                       <a
@@ -242,10 +247,10 @@ export function Contact() {
                   </a>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Quick response note */}
-            <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-center gap-3 text-xs text-indigo-900">
+            <div className="p-4 rounded-2xl bg-indigo-50/80 border border-indigo-100 flex items-center gap-3 text-xs text-indigo-950 font-medium">
               <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
               <span>
                 Committed to timely professional responses within 24 hours.
@@ -261,10 +266,10 @@ export function Contact() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7"
           >
-            <div className="glass-card p-6 sm:p-10 rounded-3xl shadow-sm">
+            <SpotlightCard className="p-6 sm:p-10">
               {isSuccess ? (
                 <div className="py-12 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center shadow-md shadow-emerald-500/20">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900">
@@ -275,7 +280,7 @@ export function Contact() {
                   </p>
                   <button
                     onClick={() => setIsSuccess(false)}
-                    className="mt-4 px-6 py-2.5 text-xs font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+                    className="mt-4 px-6 py-2.5 text-xs font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition-colors cursor-pointer"
                   >
                     Send Another Message
                   </button>
@@ -287,7 +292,7 @@ export function Contact() {
                     <div>
                       <label
                         htmlFor="name"
-                        className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5"
+                        className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 font-mono"
                       >
                         Your Name *
                       </label>
@@ -316,7 +321,7 @@ export function Contact() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5"
+                        className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 font-mono"
                       >
                         Email Address *
                       </label>
@@ -346,7 +351,7 @@ export function Contact() {
                   <div>
                     <label
                       htmlFor="subject"
-                      className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5"
+                      className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 font-mono"
                     >
                       Subject *
                     </label>
@@ -362,7 +367,7 @@ export function Contact() {
                         errors.subject
                           ? "border-rose-400 focus:ring-rose-200"
                           : "border-slate-200 focus:border-indigo-500 focus:ring-indigo-100"
-                        }`}
+                      }`}
                     />
                     {errors.subject && (
                       <p className="mt-1 text-xs text-rose-600 font-medium">
@@ -375,7 +380,7 @@ export function Contact() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5"
+                      className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5 font-mono"
                     >
                       Message *
                     </label>
@@ -400,27 +405,29 @@ export function Contact() {
                     )}
                   </div>
 
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 active:scale-98 transition-all disabled:opacity-70 shadow-md shadow-indigo-600/20 cursor-pointer"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        <span>Sending message...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Send Message</span>
-                        <Send className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
+                  {/* Submit Button with Magnetic Physics */}
+                  <Magnetic strength={15}>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 active:scale-98 transition-all disabled:opacity-70 shadow-md shadow-indigo-600/25 cursor-pointer"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          <span>Sending message...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Send Message</span>
+                          <Send className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </Magnetic>
                 </form>
               )}
-            </div>
+            </SpotlightCard>
           </motion.div>
         </div>
       </div>

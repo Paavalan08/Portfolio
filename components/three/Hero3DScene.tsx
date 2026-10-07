@@ -2,7 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
+import { Float, Html } from "@react-three/drei";
 import * as THREE from "three";
 
 interface Hero3DSceneProps {
@@ -15,11 +15,10 @@ function createFibonacciSpherePositions(count: number): Float32Array {
   const phi = (1 + Math.sqrt(5)) / 2; // Golden ratio
 
   for (let i = 0; i < count; i++) {
-    const y = 1 - (i / (count - 1)) * 2; // y goes from 1 to -1
+    const y = 1 - (i / (count - 1)) * 2;
     const radiusAtY = Math.sqrt(1 - y * y);
-    const theta = 2 * Math.PI * i / phi;
-
-    const radialOffset = 2.4 + ((i * 7) % 10) * 0.22;
+    const theta = (2 * Math.PI * i) / phi;
+    const radialOffset = 2.6 + ((i * 7) % 9) * 0.18;
 
     positions[i * 3] = Math.cos(theta) * radiusAtY * radialOffset;
     positions[i * 3 + 1] = y * radialOffset;
@@ -29,15 +28,23 @@ function createFibonacciSpherePositions(count: number): Float32Array {
   return positions;
 }
 
-const DESKTOP_POSITIONS = createFibonacciSpherePositions(85);
-const MOBILE_POSITIONS = createFibonacciSpherePositions(35);
+const DESKTOP_POSITIONS = createFibonacciSpherePositions(90);
+const MOBILE_POSITIONS = createFibonacciSpherePositions(40);
+
+const ORBITING_TAGS = [
+  { text: "TypeScript", pos: [2.3, 0.8, -0.2] as const },
+  { text: "Next.js", pos: [-2.1, 1.2, 0.4] as const },
+  { text: "Django", pos: [1.8, -1.5, 0.8] as const },
+  { text: "GraphQL", pos: [-1.9, -1.1, -0.6] as const },
+];
 
 export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
   const coreRef = useRef<THREE.Group>(null);
+  const outerPolyRef = useRef<THREE.Mesh>(null);
+  const innerCoreRef = useRef<THREE.Mesh>(null);
   const ring1Ref = useRef<THREE.Mesh>(null);
   const ring2Ref = useRef<THREE.Mesh>(null);
   const ring3Ref = useRef<THREE.Mesh>(null);
-  const innerPolyRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
 
   const positions = useMemo(
@@ -46,137 +53,176 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
   );
 
   useFrame((state, delta) => {
-    // Smooth mouse responsiveness with damping
-    const targetX = (state.pointer.x * Math.PI) / 6;
-    const targetY = (state.pointer.y * Math.PI) / 8;
+    // Mouse damping interpolation
+    const targetX = (state.pointer.x * Math.PI) / 5;
+    const targetY = (state.pointer.y * Math.PI) / 7;
 
     if (coreRef.current) {
       coreRef.current.rotation.y = THREE.MathUtils.damp(
         coreRef.current.rotation.y,
-        coreRef.current.rotation.y + delta * 0.25 + targetX * 0.1,
-        3,
+        coreRef.current.rotation.y + delta * 0.22 + targetX * 0.1,
+        3.5,
         delta
       );
       coreRef.current.rotation.x = THREE.MathUtils.damp(
         coreRef.current.rotation.x,
-        targetY * 0.3,
-        3,
+        targetY * 0.25,
+        3.5,
         delta
       );
     }
 
-    // Rings rotating on different orbital axes
+    // Outer multifaceted polyhedron
+    if (outerPolyRef.current) {
+      outerPolyRef.current.rotation.y += delta * 0.35;
+      outerPolyRef.current.rotation.x -= delta * 0.18;
+    }
+
+    // Inner glowing core pulse
+    if (innerCoreRef.current) {
+      innerCoreRef.current.rotation.y -= delta * 0.5;
+      const t = state.clock.getElapsedTime();
+      const scale = 1 + Math.sin(t * 2) * 0.05;
+      innerCoreRef.current.scale.set(scale, scale, scale);
+    }
+
+    // Orbital Gyroscope rings
     if (ring1Ref.current) {
       ring1Ref.current.rotation.z += delta * 0.3;
-      ring1Ref.current.rotation.x += delta * 0.15;
+      ring1Ref.current.rotation.x += delta * 0.12;
     }
     if (ring2Ref.current) {
-      ring2Ref.current.rotation.y -= delta * 0.25;
-      ring2Ref.current.rotation.z += delta * 0.1;
+      ring2Ref.current.rotation.y -= delta * 0.22;
+      ring2Ref.current.rotation.z += delta * 0.14;
     }
     if (ring3Ref.current) {
-      ring3Ref.current.rotation.x += delta * 0.2;
-      ring3Ref.current.rotation.y += delta * 0.15;
+      ring3Ref.current.rotation.x += delta * 0.18;
+      ring3Ref.current.rotation.y += delta * 0.16;
     }
 
-    // Inner polyhedron gentle rotation
-    if (innerPolyRef.current) {
-      innerPolyRef.current.rotation.y += delta * 0.4;
-      innerPolyRef.current.rotation.x -= delta * 0.2;
-    }
-
-    // Particle constellation slow drift
+    // Point cloud drift
     if (particlesRef.current) {
-      particlesRef.current.rotation.y += delta * 0.08;
+      particlesRef.current.rotation.y += delta * 0.06;
     }
   });
 
   return (
     <>
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[6, 8, 5]} intensity={2.2} color="#ffffff" />
-      <directionalLight position={[-6, -4, -3]} intensity={1.0} color="#818cf8" />
-      <pointLight position={[0, 0, 0]} intensity={1.5} color="#4f46e5" distance={6} />
+      <ambientLight intensity={1.4} />
+      <directionalLight position={[6, 8, 5]} intensity={2.6} color="#ffffff" />
+      <directionalLight position={[-6, -4, -3]} intensity={1.2} color="#818cf8" />
+      <pointLight position={[0, 0, 0]} intensity={2.4} color="#6366f1" distance={7} />
+      <pointLight position={[3, 3, 2]} intensity={1.5} color="#3b82f6" distance={6} />
 
-      <Float speed={1.8} rotationIntensity={0.6} floatIntensity={0.8}>
-        <group ref={coreRef} scale={isMobile ? 0.9 : 1.25}>
-          {/* Inner Core Solid Facets */}
-          <mesh ref={innerPolyRef}>
-            <octahedronGeometry args={[1.05, 0]} />
-            <meshStandardMaterial
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.7}>
+        <group ref={coreRef} scale={isMobile ? 0.95 : 1.25}>
+          {/* Main Translucent Glass Polyhedron */}
+          <mesh ref={outerPolyRef}>
+            <icosahedronGeometry args={[1.1, 0]} />
+            <meshPhysicalMaterial
               color="#4f46e5"
-              roughness={0.2}
-              metalness={0.7}
               emissive="#312e81"
-              emissiveIntensity={0.35}
+              emissiveIntensity={0.3}
+              roughness={0.15}
+              metalness={0.4}
+              clearcoat={1}
+              clearcoatRoughness={0.1}
+              transparent
+              opacity={0.85}
             />
           </mesh>
 
-          {/* Core Wireframe Overlay for Architectural Feel */}
+          {/* Core Architectural Wireframe Cage */}
           <mesh>
-            <octahedronGeometry args={[1.08, 0]} />
+            <icosahedronGeometry args={[1.14, 0]} />
             <meshBasicMaterial
               color="#c7d2fe"
               wireframe
               transparent
-              opacity={0.8}
+              opacity={0.75}
             />
           </mesh>
 
-          {/* Inner Small Energy Node */}
-          <mesh>
-            <sphereGeometry args={[0.35, 16, 16]} />
-            <meshBasicMaterial color="#6366f1" />
+          {/* Inner Glowing Plasma Nucleus */}
+          <mesh ref={innerCoreRef}>
+            <octahedronGeometry args={[0.55, 0]} />
+            <meshStandardMaterial
+              color="#818cf8"
+              emissive="#6366f1"
+              emissiveIntensity={0.8}
+              roughness={0.2}
+              metalness={0.8}
+            />
           </mesh>
 
-          {/* Orbiting Orbital Ring 1 */}
+          {/* Orbital Gyroscope Ring 1 */}
           <mesh ref={ring1Ref}>
-            <torusGeometry args={[1.8, 0.02, 16, 64]} />
+            <torusGeometry args={[1.9, 0.022, 16, 72]} />
             <meshStandardMaterial
               color="#6366f1"
               emissive="#4338ca"
               emissiveIntensity={0.4}
               roughness={0.3}
+              metalness={0.8}
             />
           </mesh>
 
-          {/* Orbiting Orbital Ring 2 */}
+          {/* Orbital Gyroscope Ring 2 */}
           <mesh ref={ring2Ref} rotation={[Math.PI / 3, 0, 0]}>
-            <torusGeometry args={[2.1, 0.015, 16, 64]} />
+            <torusGeometry args={[2.2, 0.018, 16, 72]} />
             <meshStandardMaterial
               color="#3b82f6"
               emissive="#1d4ed8"
               emissiveIntensity={0.3}
-              roughness={0.4}
+              roughness={0.35}
+              metalness={0.7}
             />
           </mesh>
 
-          {/* Orbiting Orbital Ring 3 */}
-          <mesh ref={ring3Ref} rotation={[-Math.PI / 4, Math.PI / 4, 0]}>
-            <torusGeometry args={[2.35, 0.012, 16, 64]} />
+          {/* Orbital Gyroscope Ring 3 */}
+          <mesh ref={ring3Ref} rotation={[-Math.PI / 3.5, Math.PI / 4, 0]}>
+            <torusGeometry args={[2.5, 0.015, 16, 72]} />
             <meshStandardMaterial
-              color="#818cf8"
-              roughness={0.3}
-              transparent
-              opacity={0.7}
+              color="#a855f7"
+              emissive="#6b21a8"
+              emissiveIntensity={0.25}
+              roughness={0.4}
+              metalness={0.6}
             />
           </mesh>
 
-          {/* Orbiting Satellite Nodes */}
-          <mesh position={[1.8, 0, 0]}>
-            <sphereGeometry args={[0.08, 12, 12]} />
-            <meshBasicMaterial color="#3b82f6" />
+          {/* Orbiting Satellite Spheres */}
+          <mesh position={[1.9, 0, 0]}>
+            <sphereGeometry args={[0.09, 16, 16]} />
+            <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.5} />
           </mesh>
-          <mesh position={[-1.4, 1.2, 0.5]}>
-            <sphereGeometry args={[0.06, 12, 12]} />
-            <meshBasicMaterial color="#6366f1" />
+          <mesh position={[-1.5, 1.4, 0.4]}>
+            <sphereGeometry args={[0.07, 16, 16]} />
+            <meshStandardMaterial color="#6366f1" emissive="#6366f1" emissiveIntensity={0.5} />
           </mesh>
-          <mesh position={[0.6, -1.8, -0.8]}>
-            <sphereGeometry args={[0.07, 12, 12]} />
-            <meshBasicMaterial color="#a5b4fc" />
+          <mesh position={[0.7, -2.0, -0.6]}>
+            <sphereGeometry args={[0.08, 16, 16]} />
+            <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.5} />
           </mesh>
 
-          {/* Constellation Point Cloud */}
+          {/* Floating 3D Tech HUD Badges */}
+          {!isMobile &&
+            ORBITING_TAGS.map((tag) => (
+              <group key={tag.text} position={tag.pos}>
+                <Html
+                  center
+                  distanceFactor={8}
+                  style={{ pointerEvents: "none" }}
+                >
+                  <div className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-indigo-200/90 shadow-md text-[10px] font-mono font-bold text-indigo-700 whitespace-nowrap select-none flex items-center gap-1.5 transition-transform">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>{tag.text}</span>
+                  </div>
+                </Html>
+              </group>
+            ))}
+
+          {/* Quantum Particle Constellation */}
           <points ref={particlesRef}>
             <bufferGeometry>
               <bufferAttribute
@@ -185,10 +231,10 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
               />
             </bufferGeometry>
             <pointsMaterial
-              size={isMobile ? 0.04 : 0.05}
+              size={isMobile ? 0.045 : 0.055}
               color="#6366f1"
               transparent
-              opacity={0.65}
+              opacity={0.7}
               sizeAttenuation
             />
           </points>
