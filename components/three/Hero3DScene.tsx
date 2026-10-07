@@ -2,7 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, Html } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
 interface Hero3DSceneProps {
@@ -31,13 +31,6 @@ function createFibonacciSpherePositions(count: number): Float32Array {
 const DESKTOP_POSITIONS = createFibonacciSpherePositions(90);
 const MOBILE_POSITIONS = createFibonacciSpherePositions(40);
 
-const ORBITING_TAGS = [
-  { text: "TypeScript", pos: [2.3, 0.8, -0.2] as const },
-  { text: "Next.js", pos: [-2.1, 1.2, 0.4] as const },
-  { text: "Django", pos: [1.8, -1.5, 0.8] as const },
-  { text: "GraphQL", pos: [-1.9, -1.1, -0.6] as const },
-];
-
 export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
   const coreRef = useRef<THREE.Group>(null);
   const outerPolyRef = useRef<THREE.Mesh>(null);
@@ -46,6 +39,7 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
   const ring2Ref = useRef<THREE.Mesh>(null);
   const ring3Ref = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
+  const elapsedRef = useRef(0);
 
   const positions = useMemo(
     () => (isMobile ? MOBILE_POSITIONS : DESKTOP_POSITIONS),
@@ -53,6 +47,9 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
   );
 
   useFrame((state, delta) => {
+    elapsedRef.current += delta;
+    const t = elapsedRef.current;
+
     // Mouse damping interpolation
     const targetX = (state.pointer.x * Math.PI) / 5;
     const targetY = (state.pointer.y * Math.PI) / 7;
@@ -78,10 +75,9 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
       outerPolyRef.current.rotation.x -= delta * 0.18;
     }
 
-    // Inner glowing core pulse
+    // Inner glowing core pulse without THREE.Clock
     if (innerCoreRef.current) {
       innerCoreRef.current.rotation.y -= delta * 0.5;
-      const t = state.clock.getElapsedTime();
       const scale = 1 + Math.sin(t * 2) * 0.05;
       innerCoreRef.current.scale.set(scale, scale, scale);
     }
@@ -191,36 +187,23 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
             />
           </mesh>
 
-          {/* Orbiting Satellite Spheres */}
+          {/* Orbiting Satellite Crystals */}
           <mesh position={[1.9, 0, 0]}>
-            <sphereGeometry args={[0.09, 16, 16]} />
-            <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.5} />
+            <octahedronGeometry args={[0.12, 0]} />
+            <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.6} />
           </mesh>
-          <mesh position={[-1.5, 1.4, 0.4]}>
-            <sphereGeometry args={[0.07, 16, 16]} />
-            <meshStandardMaterial color="#6366f1" emissive="#6366f1" emissiveIntensity={0.5} />
+          <mesh position={[-1.6, 1.4, 0.4]}>
+            <octahedronGeometry args={[0.1, 0]} />
+            <meshStandardMaterial color="#6366f1" emissive="#6366f1" emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[0.7, -2.0, -0.6]}>
-            <sphereGeometry args={[0.08, 16, 16]} />
-            <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.5} />
+            <octahedronGeometry args={[0.11, 0]} />
+            <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.6} />
           </mesh>
-
-          {/* Floating 3D Tech HUD Badges */}
-          {!isMobile &&
-            ORBITING_TAGS.map((tag) => (
-              <group key={tag.text} position={tag.pos}>
-                <Html
-                  center
-                  distanceFactor={8}
-                  style={{ pointerEvents: "none" }}
-                >
-                  <div className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-indigo-200/90 shadow-md text-[10px] font-mono font-bold text-indigo-700 whitespace-nowrap select-none flex items-center gap-1.5 transition-transform">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{tag.text}</span>
-                  </div>
-                </Html>
-              </group>
-            ))}
+          <mesh position={[-1.8, -1.1, 0.5]}>
+            <octahedronGeometry args={[0.09, 0]} />
+            <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={0.6} />
+          </mesh>
 
           {/* Quantum Particle Constellation */}
           <points ref={particlesRef}>
