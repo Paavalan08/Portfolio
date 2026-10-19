@@ -82,7 +82,7 @@ export function CustomCursor() {
     <>
       {/* Outer ring */}
       <motion.div
-        className="fixed top-0 left-0 z-50 pointer-events-none rounded-full border border-indigo-500/40 mix-blend-multiply"
+        className="fixed top-0 left-0 z-50 pointer-events-none rounded-full border border-red-500/40 mix-blend-multiply"
         style={{
           x: cursorX,
           y: cursorY,
@@ -93,17 +93,17 @@ export function CustomCursor() {
           width: isHovered ? 48 : 32,
           height: isHovered ? 48 : 32,
           backgroundColor: isHovered
-            ? "rgba(79, 70, 229, 0.08)"
-            : "rgba(79, 70, 229, 0)",
+            ? "rgba(217, 25, 45, 0.08)"
+            : "rgba(217, 25, 45, 0)",
           borderColor: isHovered
-            ? "rgba(79, 70, 229, 0.6)"
-            : "rgba(79, 70, 229, 0.35)",
+            ? "rgba(217, 25, 45, 0.6)"
+            : "rgba(217, 25, 45, 0.35)",
         }}
         transition={{ type: "spring", stiffness: 350, damping: 25 }}
       />
       {/* Center dot */}
       <motion.div
-        className="fixed top-0 left-0 z-50 pointer-events-none rounded-full bg-indigo-600 shadow-sm"
+        className="fixed top-0 left-0 z-50 pointer-events-none rounded-full bg-red-600 shadow-sm"
         style={{
           x: cursorX,
           y: cursorY,

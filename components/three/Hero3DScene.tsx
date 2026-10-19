@@ -106,9 +106,9 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
     <>
       <ambientLight intensity={1.4} />
       <directionalLight position={[6, 8, 5]} intensity={2.6} color="#ffffff" />
-      <directionalLight position={[-6, -4, -3]} intensity={1.2} color="#818cf8" />
-      <pointLight position={[0, 0, 0]} intensity={2.4} color="#6366f1" distance={7} />
-      <pointLight position={[3, 3, 2]} intensity={1.5} color="#3b82f6" distance={6} />
+      <directionalLight position={[-6, -4, -3]} intensity={1.2} color="#ff9a8a" />
+      <pointLight position={[0, 0, 0]} intensity={2.4} color="#ef4444" distance={7} />
+      <pointLight position={[3, 3, 2]} intensity={1.5} color="#fb7185" distance={6} />
 
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.7}>
         <group ref={coreRef} scale={isMobile ? 0.95 : 1.25}>
@@ -116,8 +116,8 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh ref={outerPolyRef}>
             <icosahedronGeometry args={[1.1, 0]} />
             <meshPhysicalMaterial
-              color="#4f46e5"
-              emissive="#312e81"
+              color="#e84a4a"
+              emissive="#9f2028"
               emissiveIntensity={0.3}
               roughness={0.15}
               metalness={0.4}
@@ -132,7 +132,7 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh>
             <icosahedronGeometry args={[1.14, 0]} />
             <meshBasicMaterial
-              color="#c7d2fe"
+              color="#ffe3dc"
               wireframe
               transparent
               opacity={0.75}
@@ -143,8 +143,8 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh ref={innerCoreRef}>
             <octahedronGeometry args={[0.55, 0]} />
             <meshStandardMaterial
-              color="#818cf8"
-              emissive="#6366f1"
+              color="#ff8b79"
+              emissive="#e33b42"
               emissiveIntensity={0.8}
               roughness={0.2}
               metalness={0.8}
@@ -155,8 +155,8 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh ref={ring1Ref}>
             <torusGeometry args={[1.9, 0.022, 16, 72]} />
             <meshStandardMaterial
-              color="#6366f1"
-              emissive="#4338ca"
+              color="#ef4444"
+              emissive="#b91c2c"
               emissiveIntensity={0.4}
               roughness={0.3}
               metalness={0.8}
@@ -167,8 +167,8 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh ref={ring2Ref} rotation={[Math.PI / 3, 0, 0]}>
             <torusGeometry args={[2.2, 0.018, 16, 72]} />
             <meshStandardMaterial
-              color="#3b82f6"
-              emissive="#1d4ed8"
+              color="#fb7185"
+              emissive="#e11d48"
               emissiveIntensity={0.3}
               roughness={0.35}
               metalness={0.7}
@@ -179,8 +179,8 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           <mesh ref={ring3Ref} rotation={[-Math.PI / 3.5, Math.PI / 4, 0]}>
             <torusGeometry args={[2.5, 0.015, 16, 72]} />
             <meshStandardMaterial
-              color="#a855f7"
-              emissive="#6b21a8"
+              color="#ffb199"
+              emissive="#e85d52"
               emissiveIntensity={0.25}
               roughness={0.4}
               metalness={0.6}
@@ -190,19 +190,19 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
           {/* Orbiting Satellite Crystals */}
           <mesh position={[1.9, 0, 0]}>
             <octahedronGeometry args={[0.12, 0]} />
-            <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.6} />
+            <meshStandardMaterial color="#fb7185" emissive="#fb7185" emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[-1.6, 1.4, 0.4]}>
             <octahedronGeometry args={[0.1, 0]} />
-            <meshStandardMaterial color="#6366f1" emissive="#6366f1" emissiveIntensity={0.6} />
+            <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[0.7, -2.0, -0.6]}>
             <octahedronGeometry args={[0.11, 0]} />
-            <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.6} />
+            <meshStandardMaterial color="#ff9a76" emissive="#ff9a76" emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[-1.8, -1.1, 0.5]}>
             <octahedronGeometry args={[0.09, 0]} />
-            <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={0.6} />
+            <meshStandardMaterial color="#f97366" emissive="#f97366" emissiveIntensity={0.6} />
           </mesh>
 
           {/* Quantum Particle Constellation */}
@@ -215,7 +215,7 @@ export function Hero3DScene({ isMobile = false }: Hero3DSceneProps) {
             </bufferGeometry>
             <pointsMaterial
               size={isMobile ? 0.045 : 0.055}
-              color="#6366f1"
+              color="#d93643"
               transparent
               opacity={0.7}
               sizeAttenuation

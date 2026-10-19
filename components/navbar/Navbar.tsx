@@ -106,8 +106,8 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Action CTA & CV button */}
-            <div className="hidden sm:flex items-center gap-3">
+            {/* Action CTA, Sound Toggle & CV button */}
+            <div className="hidden sm:flex items-center gap-2.5">
               <Magnetic strength={10}>
                 <a
                   href="/cv/varathanathan-paavalan-cv.pdf"
@@ -133,14 +133,16 @@ export function Navbar() {
             </div>
 
             {/* Mobile Hamburger Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200/80 cursor-pointer"
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            <div className="flex sm:hidden items-center gap-2">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200/80 cursor-pointer"
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
       </header>

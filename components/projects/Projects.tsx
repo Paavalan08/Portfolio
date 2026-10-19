@@ -3,17 +3,151 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ExternalLink,
+  Activity,
+  ArrowUpRight,
+  BarChart3,
+  Check,
+  Code2,
+  LayoutDashboard,
   MapPin,
   Maximize2,
-  Code2,
+  Package,
+  Search,
+  ShoppingBag,
+  Sparkles,
+  Users,
+  Utensils,
+  type LucideIcon,
 } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { projects, ProjectItem } from "@/data/projects";
 import { ProjectModal } from "./ProjectModal";
 
 const categories = ["All", "Web Application", "Desktop Application", "Systems"];
+
+const projectIcons: LucideIcon[] = [
+  ShoppingBag,
+  Users,
+  Utensils,
+  Activity,
+  Package,
+];
+
+function ProjectArtwork({
+  project,
+  index,
+  onOpen,
+}: {
+  project: ProjectItem;
+  index: number;
+  onOpen: () => void;
+}) {
+  const Icon = projectIcons[index % projectIcons.length];
+
+  return (
+    <div className={`project-artwork project-artwork-${index % 5}`}>
+      <div className="project-artwork-grain" />
+      <div className="project-artwork-orb project-artwork-orb-one" />
+      <div className="project-artwork-orb project-artwork-orb-two" />
+
+      <div className="project-artwork-topline">
+        <span className="project-type">
+          <span className="project-type-dot" />
+          {project.typeBadge}
+        </span>
+        <button
+          type="button"
+          onClick={onOpen}
+          className="project-open-icon"
+          aria-label={`Open ${project.title} details`}
+        >
+          <Maximize2 className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="project-artwork-mark" aria-hidden="true">
+        <Icon strokeWidth={1.15} />
+      </div>
+
+      <div className="project-window">
+        <div className="project-window-bar">
+          <div className="project-window-brand">
+            <span className="project-window-logo">
+              <Icon className="h-3.5 w-3.5" />
+            </span>
+            <span className="project-window-name">{project.title}</span>
+          </div>
+          <div className="project-window-actions">
+            <span className="project-window-search">
+              <Search className="h-3 w-3" />
+            </span>
+            <span className="project-window-avatar">VP</span>
+          </div>
+        </div>
+
+        <div className="project-window-content">
+          <div className="project-window-heading">
+            <div>
+              <span className="project-window-eyebrow">OVERVIEW</span>
+              <span className="project-window-welcome">Workspace</span>
+            </div>
+            <span className="project-window-add">
+              <span>+</span> New
+            </span>
+          </div>
+
+          <div className="project-window-stats">
+            <div className="project-stat">
+              <span className="project-stat-icon">
+                <BarChart3 className="h-3.5 w-3.5" />
+              </span>
+              <span className="project-stat-lines">
+                <i />
+                <b />
+              </span>
+              <span className="project-stat-trend">+12.8%</span>
+            </div>
+            <div className="project-stat">
+              <span className="project-stat-icon project-stat-icon-soft">
+                <LayoutDashboard className="h-3.5 w-3.5" />
+              </span>
+              <span className="project-stat-lines">
+                <i />
+                <b />
+              </span>
+              <span className="project-stat-trend">+8.4%</span>
+            </div>
+          </div>
+
+          <div className="project-window-list">
+            <span className="project-window-list-title">Recent activity</span>
+            <span className="project-window-row">
+              <span className="project-window-row-icon">
+                <Check className="h-3 w-3" />
+              </span>
+              <i />
+              <b />
+              <span className="project-window-row-status">Complete</span>
+            </span>
+            <span className="project-window-row project-window-row-short">
+              <span className="project-window-row-icon project-window-row-icon-light">
+                <Activity className="h-3 w-3" />
+              </span>
+              <i />
+              <b />
+              <span className="project-window-row-status">In progress</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <span className="project-artwork-caption">
+        <Sparkles className="h-3.5 w-3.5" />
+        Crafted for real-world work
+      </span>
+    </div>
+  );
+}
 
 export function Projects() {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -23,170 +157,135 @@ export function Projects() {
     filter === "All"
       ? projects
       : filter === "Desktop Application"
-      ? projects.filter(
-          (p) =>
-            p.category === "Desktop Application" ||
-            p.category === "Enterprise System"
-        )
-      : filter === "Systems"
-      ? projects.filter(
-          (p) =>
-            p.category === "Full-Stack System" ||
-            p.category === "Enterprise System"
-        )
-      : projects.filter((p) => p.category === filter);
+        ? projects.filter(
+            (project) =>
+              project.category === "Desktop Application" ||
+              project.category === "Enterprise System"
+          )
+        : filter === "Systems"
+          ? projects.filter(
+              (project) =>
+                project.category === "Full-Stack System" ||
+                project.category === "Enterprise System"
+            )
+          : projects.filter((project) => project.category === filter);
 
   return (
-    <section id="projects" className="py-24 sm:py-32 relative bg-slate-50/70 border-y border-slate-200/80 overflow-hidden">
-      {/* Background ambient highlights */}
-      <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-indigo-100/30 rounded-full blur-3xl pointer-events-none" />
+    <section
+      id="projects"
+      className="relative overflow-hidden border-y border-slate-200/80 bg-slate-50/70 py-24 sm:py-32"
+    >
+      <div className="pointer-events-none absolute -left-44 top-1/4 h-[34rem] w-[34rem] rounded-full bg-red-100/70 blur-[100px]" />
+      <div className="pointer-events-none absolute -right-48 bottom-0 h-[30rem] w-[30rem] rounded-full bg-rose-100/55 blur-[110px]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          badge="Featured Projects"
+          badge="Selected work"
           title="Software & Applications"
-          subtitle="Explore selected academic, commercial, and engineering software projects built across modern web and desktop frameworks."
+          subtitle="A closer look at the systems, interfaces, and thoughtful details behind my work."
         />
 
-        {/* Filter categories */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((cat) => {
-            const isActive = filter === cat;
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:mb-14">
+          {categories.map((category) => {
+            const isActive = filter === category;
+
             return (
               <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`relative px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                key={category}
+                type="button"
+                onClick={() => setFilter(category)}
+                className={`relative rounded-full px-4 py-2.5 text-xs font-semibold transition-colors sm:px-5 sm:text-sm ${
                   isActive
-                    ? "text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200"
+                    ? "text-white"
+                    : "border border-slate-200 bg-white/80 text-slate-600 hover:border-red-200 hover:text-red-700"
                 }`}
               >
                 {isActive && (
-                  <motion.div
+                  <motion.span
                     layoutId="activeProjFilter"
-                    className="absolute inset-0 bg-indigo-600 rounded-full -z-10 shadow-sm"
+                    className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-red-600 to-rose-500 shadow-lg shadow-red-600/20"
                     transition={{ type: "spring", stiffness: 450, damping: 30 }}
                   />
                 )}
-                {cat}
+                {category}
               </button>
             );
           })}
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <motion.div layout className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredProjects.map((project, index) => (
-            <motion.div
+            <motion.article
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              layout
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
               transition={{
-                duration: 0.5,
-                delay: index * 0.1,
+                duration: 0.45,
+                delay: index * 0.06,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              whileHover={{ y: -6 }}
-              className="h-full"
+              whileHover={{ y: -7 }}
+              className="project-card group"
             >
-              <SpotlightCard className="h-full flex flex-col justify-between group">
-                <div>
-                  {/* Visual Application Mockup Window Header */}
-                  <div className="w-full bg-slate-900 text-white rounded-t-3xl overflow-hidden border-b border-slate-800">
-                    {/* Window Controls Bar */}
-                    <div className="px-4 py-2.5 bg-slate-950/80 flex items-center justify-between border-b border-white/5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
-                      </div>
-                      <div className="text-[11px] font-mono text-slate-400 bg-white/5 px-2.5 py-0.5 rounded-md truncate max-w-[170px]">
-                        {project.typeBadge}
-                      </div>
-                      <button
-                        onClick={() => setSelectedProject(project)}
-                        className="text-slate-400 hover:text-white transition-colors cursor-pointer p-0.5"
-                        title="Expand Details"
-                        aria-label={`Expand details for ${project.title}`}
-                      >
-                        <Maximize2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
+              <ProjectArtwork
+                project={project}
+                index={projects.indexOf(project)}
+                onOpen={() => setSelectedProject(project)}
+              />
 
-                    {/* Visual Project Canvas Artwork */}
-                    <div
-                      className={`h-40 w-full bg-gradient-to-tr ${project.accentColor} relative p-5 flex flex-col justify-end text-white overflow-hidden`}
-                    >
-                      <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
-                      <div className="absolute top-2 right-2 text-white/10 pointer-events-none">
-                        <Code2 className="w-24 h-24" />
-                      </div>
-
-                      <div className="relative z-10">
-                        <span className="text-[10px] uppercase tracking-widest font-mono text-white/80 font-bold block mb-1">
-                          {project.category}
-                        </span>
-                        <h3 className="text-lg font-bold text-white tracking-tight leading-snug line-clamp-2">
-                          {project.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-6">
-                    {project.location && (
-                      <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-2">
-                        <MapPin className="w-3.5 h-3.5 text-indigo-500" />
-                        <span>{project.location}</span>
-                      </div>
-                    )}
-
-                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
-                      {project.description}
-                    </p>
-
-                    {/* Tech stack badges */}
-                    <div className="mt-5 flex flex-wrap gap-1.5">
-                      {project.technologies.slice(0, 4).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200/80 group-hover:border-indigo-200 transition-colors"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 4 && (
-                        <span className="px-2 py-1 text-[11px] font-semibold rounded-md bg-slate-50 text-slate-500">
-                          +{project.technologies.length - 4}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+              <div className="project-card-content">
+                <div className="project-card-meta">
+                  <span>{project.category}</span>
+                  {project.location && (
+                    <>
+                      <span className="project-meta-separator" />
+                      <span className="project-location">
+                        <MapPin className="h-3 w-3" />
+                        {project.location}
+                      </span>
+                    </>
+                  )}
                 </div>
 
-                {/* Card Footer Action */}
-                <div className="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-mono">
-                    {project.category}
-                  </span>
+                <h3 className="project-card-title">{project.title}</h3>
+                <p className="project-card-description">{project.description}</p>
 
+                <div className="project-card-technologies">
+                  {project.technologies.slice(0, 4).map((technology) => (
+                    <span key={technology}>{technology}</span>
+                  ))}
+                  {project.technologies.length > 4 && (
+                    <span className="project-more-tech">
+                      +{project.technologies.length - 4}
+                    </span>
+                  )}
+                </div>
+
+                <div className="project-card-footer">
+                  <span className="project-card-index">
+                    PROJECT <b>{String(projects.indexOf(project) + 1).padStart(2, "0")}</b>
+                  </span>
                   <button
+                    type="button"
                     onClick={() => setSelectedProject(project)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 py-1.5 px-3 rounded-lg hover:bg-indigo-50 transition-colors cursor-pointer"
+                    className="project-details-button"
                   >
-                    <span>Explore Details</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    Discover project
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </div>
-              </SpotlightCard>
-            </motion.div>
+              </div>
+            </motion.article>
           ))}
+        </motion.div>
+
+        <div className="mt-10 flex items-center justify-center gap-2 text-xs font-medium text-slate-500">
+          <Code2 className="h-3.5 w-3.5 text-red-500" />
+          Thoughtful engineering. Built to be useful.
         </div>
 
-        {/* Detailed Modal */}
         <ProjectModal
           project={selectedProject}
           onClose={() => setSelectedProject(null)}

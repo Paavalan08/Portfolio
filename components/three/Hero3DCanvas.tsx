@@ -59,8 +59,8 @@ export function Hero3DCanvas() {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <div className="relative w-64 h-64 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full border border-dashed border-indigo-300 opacity-60" />
-          <div className="w-32 h-32 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-400 rotate-45 shadow-xl shadow-indigo-500/20 flex items-center justify-center text-white font-mono font-bold text-lg">
+          <div className="absolute inset-0 rounded-full border border-dashed border-red-300 opacity-70" />
+          <div className="w-32 h-32 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-400 rotate-45 shadow-xl shadow-red-500/20 flex items-center justify-center text-white font-mono font-bold text-lg">
             {"{ VP }"}
           </div>
         </div>
@@ -86,7 +86,7 @@ export function Hero3DCanvas() {
             }}
             className={`absolute ${tag.pos} z-20 pointer-events-none`}
           >
-            <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-indigo-200/90 shadow-md text-[11px] font-mono font-bold text-indigo-700 whitespace-nowrap flex items-center gap-1.5 shadow-indigo-500/5">
+            <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-red-200/90 shadow-md text-[11px] font-mono font-bold text-red-700 whitespace-nowrap flex items-center gap-1.5 shadow-red-500/5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>{tag.text}</span>
             </div>

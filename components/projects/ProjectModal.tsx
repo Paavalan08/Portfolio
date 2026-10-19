@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -21,159 +22,175 @@ interface ProjectModalProps {
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+    if (!project) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
     };
 
-    if (project) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    }
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [project, onClose]);
 
-  if (!project) return null;
+  if (typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-        {/* Backdrop */}
+      {project && (
         <motion.div
+          key={project.id}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-md cursor-pointer"
-        />
-
-        {/* Modal Window */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ type: "spring", stiffness: 350, damping: 28 }}
-          className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-10 max-h-[90vh] flex flex-col"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) onClose();
+          }}
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overscroll-contain bg-slate-950/55 px-4 py-5 backdrop-blur-sm sm:px-6 sm:py-8"
         >
-          {/* Header Banner */}
-          <div className="p-6 sm:p-8 bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-white relative">
-            <button
-              onClick={onClose}
-              className="absolute top-5 right-5 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-              aria-label="Close project modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-indigo-200 border border-white/10">
-                {project.typeBadge}
-              </span>
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-slate-300">
-                {project.category}
-              </span>
-              {project.location && (
-                <span className="inline-flex items-center gap-1 text-xs text-slate-300">
-                  <MapPin className="w-3.5 h-3.5 text-indigo-400" />
-                  {project.location}
-                </span>
-              )}
-            </div>
-
-            <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              {project.title}
-            </h3>
-          </div>
-
-          {/* Modal Body Content */}
-          <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
-            {/* Architectural Flow Diagram Banner */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5 font-mono">
-                Architectural Flow
-              </h4>
-              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-slate-700">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <Layout className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Client View</span>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <Server className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Business Logic / API</span>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <Database className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Data Layer</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-                System Overview
-              </h4>
-              <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
-                {project.detailedOverview}
-              </p>
-            </div>
-
-            {project.features && project.features.length > 0 && (
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 font-mono">
-                  Key Technical Features
-                </h4>
-                <ul className="grid grid-cols-1 gap-2.5">
-                  {project.features.map((feat, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2.5 text-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">
-                Technology Stack
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Status info */}
-            <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-              <div className="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-                <span>Verified academic & client engineering solution</span>
-              </div>
+          <motion.section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
+            initial={{ opacity: 0, scale: 0.96, y: 18 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97, y: 12 }}
+            transition={{ type: "spring", stiffness: 350, damping: 30 }}
+            className="relative z-10 flex max-h-[min(88dvh,850px)] w-full max-w-[760px] flex-col overflow-hidden rounded-[26px] border border-white/80 bg-white shadow-[0_32px_100px_-28px_rgba(40,12,16,0.55)]"
+          >
+            <div className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#8f1021] via-[#c71930] to-[#ef5360] px-6 pb-7 pt-7 text-white sm:px-9 sm:pb-8 sm:pt-8">
+              <div className="pointer-events-none absolute -right-14 -top-32 h-72 w-72 rounded-full border border-white/10 shadow-[inset_0_0_80px_rgba(255,255,255,0.06)]" />
+              <div className="pointer-events-none absolute -right-2 -top-24 h-56 w-56 rounded-full border border-white/10" />
+              <div className="pointer-events-none absolute bottom-[-110px] left-[38%] h-52 w-52 rounded-full bg-rose-300/20 blur-3xl" />
 
               <button
+                type="button"
                 onClick={onClose}
-                className="px-5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer"
+                className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-6 sm:top-6"
+                aria-label="Close project details"
               >
-                Close
+                <X className="h-5 w-5" />
               </button>
+
+              <div className="relative z-10 pr-12 sm:pr-14">
+                <div className="mb-4 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full border border-white/20 bg-white/15 px-3 py-1.5 text-[11px] font-semibold text-white/95 backdrop-blur">
+                    {project.typeBadge}
+                  </span>
+                  <span className="rounded-full border border-white/15 bg-black/10 px-3 py-1.5 text-[11px] font-medium text-white/85">
+                    {project.category}
+                  </span>
+                </div>
+
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-100/75">
+                  Project spotlight
+                </p>
+                <h2
+                  id="project-modal-title"
+                  className="max-w-[620px] text-2xl font-bold leading-tight tracking-[-0.04em] text-white sm:text-4xl"
+                >
+                  {project.title}
+                </h2>
+
+                {project.location && (
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-rose-50/85">
+                    <MapPin className="h-3.5 w-3.5" />
+                    {project.location}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#fffdfc] p-5 sm:p-8">
+              <div className="mb-7 rounded-2xl border border-rose-100 bg-white p-4 shadow-[0_8px_26px_-20px_rgba(175,34,48,0.35)] sm:p-5">
+                <h3 className="mb-4 text-[10px] font-bold uppercase tracking-[0.16em] text-rose-800/65">
+                  How it comes together
+                </h3>
+                <div className="flex flex-col items-stretch gap-2.5 text-xs font-semibold text-[#443433] sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+                  <div className="flex items-center gap-2.5 rounded-xl border border-stone-100 bg-[#fffaf9] px-3 py-2.5">
+                    <Layout className="h-4 w-4 shrink-0 text-red-600" />
+                    <span>Client experience</span>
+                  </div>
+                  <ArrowRight className="hidden h-4 w-4 shrink-0 text-rose-300 sm:block" />
+                  <div className="flex items-center gap-2.5 rounded-xl border border-stone-100 bg-[#fffaf9] px-3 py-2.5">
+                    <Server className="h-4 w-4 shrink-0 text-red-600" />
+                    <span>Application logic</span>
+                  </div>
+                  <ArrowRight className="hidden h-4 w-4 shrink-0 text-rose-300 sm:block" />
+                  <div className="flex items-center gap-2.5 rounded-xl border border-stone-100 bg-[#fffaf9] px-3 py-2.5">
+                    <Database className="h-4 w-4 shrink-0 text-red-600" />
+                    <span>Data layer</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-7">
+                <h3 className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
+                  The overview
+                </h3>
+                <p className="text-sm leading-7 text-stone-700 sm:text-[15px]">
+                  {project.detailedOverview}
+                </p>
+              </div>
+
+              {project.features && project.features.length > 0 && (
+                <div className="mb-7">
+                  <h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
+                    What it can do
+                  </h3>
+                  <ul className="grid grid-cols-1 gap-2.5">
+                    {project.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-3 rounded-xl border border-stone-100 bg-white px-3.5 py-3 text-sm leading-6 text-stone-700"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="mb-7">
+                <h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400">
+                  Built with
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((technology) => (
+                    <span
+                      key={technology}
+                      className="rounded-lg border border-rose-100 bg-rose-50/70 px-3 py-1.5 text-xs font-semibold text-rose-800"
+                    >
+                      {technology}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 border-t border-stone-200/80 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2 text-[11px] font-medium text-stone-500">
+                  <Sparkles className="h-4 w-4 text-red-500" />
+                  <span>Designed and built with care</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="rounded-full bg-[#241817] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-red-800"
+                >
+                  Close project
+                </button>
+              </div>
+            </div>
+          </motion.section>
         </motion.div>
-      </div>
-    </AnimatePresence>
+      )}
+    </AnimatePresence>,
+    document.body
   );
 }

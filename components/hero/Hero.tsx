@@ -5,274 +5,254 @@ import { motion } from "framer-motion";
 import {
   ArrowDown,
   ArrowRight,
+  ArrowUpRight,
+  Code2,
+  Database,
   Download,
+  Layers,
   Mail,
   Sparkles,
   Terminal,
-  Layers,
-  Database,
-  Code2,
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { profileData } from "@/data/profile";
 
 const Hero3DCanvas = dynamic(
-  () => import("@/components/three/Hero3DCanvas").then((mod) => mod.Hero3DCanvas),
+  () =>
+    import("@/components/three/Hero3DCanvas").then(
+      (mod) => mod.Hero3DCanvas
+    ),
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-[420px] sm:h-[480px] lg:h-[560px] flex items-center justify-center">
-        <div className="w-44 h-44 rounded-full border border-indigo-200/50 animate-pulse bg-indigo-50/40" />
+      <div className="flex h-[360px] w-full items-center justify-center sm:h-[480px]">
+        <div className="h-40 w-40 animate-pulse rounded-full border border-red-300/30 bg-red-100/40" />
       </div>
     ),
   }
 );
 
-const metrics = [
-  { label: "Full-Stack Architecture", icon: Layers },
-  { label: "REST & GraphQL APIs", icon: Terminal },
-  { label: "Relational SQL Systems", icon: Database },
-  { label: "Modern Frontend UI", icon: Code2 },
+const specialties = [
+  { label: "Full-stack systems", icon: Layers },
+  { label: "Thoughtful interfaces", icon: Code2 },
+  { label: "APIs & data", icon: Database },
+  { label: "Built to scale", icon: Terminal },
 ];
 
 export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 flex flex-col justify-center bg-gradient-to-b from-white via-indigo-50/25 to-white overflow-hidden"
+      className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-[#fffaf8] pb-10 pt-28 sm:pt-32"
     >
-      {/* Dynamic Background Aurora Mesh & Engineering Grid */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-70 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-indigo-300/20 via-purple-200/15 to-blue-200/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-2/3 right-1/4 w-[500px] h-[500px] bg-gradient-to-bl from-blue-200/20 via-cyan-100/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-45" />
+      <div className="liquid-red-glow pointer-events-none absolute left-[48%] top-[13%] h-[34rem] w-[34rem] -translate-x-1/2 rounded-full opacity-70" />
+      <div className="pointer-events-none absolute bottom-[6%] right-[-8%] h-[24rem] w-[24rem] rounded-full bg-red-300/35 blur-[120px]" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Typography & CTAs (7 cols) */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-8 text-left z-10">
-            {/* Developer HUD Status Pill */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.03fr_0.97fr] lg:gap-4">
+          <div className="relative z-10 max-w-3xl py-8 lg:py-0">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-xs text-xs font-semibold text-slate-700"
+              transition={{ duration: 0.55 }}
+              className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-3"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span               className="inline-flex items-center gap-2 rounded-full border border-red-200/70 bg-white/75 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-red-800 backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+                Open to what&apos;s next
               </span>
-              <span className="font-mono text-[11px] tracking-wide text-slate-600">
-                STATUS: AVAILABLE • FULL-TIME & PROJECTS
+              <span className="font-mono text-[11px] tracking-[0.12em] text-stone-500">
+                {profileData.contact.location.toUpperCase()}
               </span>
             </motion.div>
 
-            {/* Name & Title */}
-            <div className="space-y-3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.08 }}
+              className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-red-700 sm:text-sm"
+            >
+              Independent developer <span className="px-1.5 text-stone-300">/</span>{" "}
+              {profileData.name}
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-3xl text-[clamp(3.35rem,8.4vw,7.8rem)] font-semibold leading-[0.91] tracking-[-0.075em] text-[#251918]"
+            >
+              I make
+              <br />
+              software feel
+              <br />
+              <span className="bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 bg-clip-text pr-2 text-transparent">
+                unforgettable.
+              </span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="mt-7 flex items-center gap-3"
+            >
+              <span className="h-px w-9 bg-red-500/70" />
+              <p className="text-sm font-medium tracking-wide text-stone-600 sm:text-base">
+                {profileData.role}
+              </p>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.32 }}
+              className="mt-5 max-w-xl text-sm leading-7 text-stone-600 sm:text-base sm:leading-8"
+            >
+              I turn ambitious ideas into beautifully considered digital
+              experiences — from the first pixel to the systems that power it.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-8 flex flex-wrap items-center gap-3"
+            >
+              <Magnetic strength={12}>
+                <a
+                  href="#projects"
+                  className="group inline-flex items-center gap-3 rounded-full bg-[#d8323b] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_8px_42px_-12px_rgba(200,45,52,0.5)] transition-all hover:bg-[#be2630] active:scale-[0.98]"
+                >
+                  Explore my work
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              </Magnetic>
+              <Magnetic strength={12}>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white/80 px-5 py-3.5 text-sm font-medium text-stone-700 transition-all hover:border-red-300 hover:bg-red-50"
+                >
+                  Say hello <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </Magnetic>
+              <a
+                href="/cv/varathanathan-paavalan-cv.pdf"
+                download="varathanathan-paavalan-cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 text-stone-500 transition-colors hover:border-red-300 hover:text-red-700"
+                aria-label="Download CV"
+                title="Download CV"
               >
-                <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-indigo-600 block mb-1 font-mono">
-                  Software Engineer Portfolio
+                <Download className="h-4 w-4" />
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-10 flex flex-wrap items-center gap-3"
+            >
+              <span className="mr-1 text-[10px] font-semibold uppercase tracking-[0.17em] text-stone-500">
+                Find me
+              </span>
+              <a
+                href={profileData.contact.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub Profile"
+                className="rounded-full border border-stone-300 p-2.5 text-stone-500 transition-all hover:border-red-300 hover:text-red-700"
+              >
+                <GithubIcon className="h-4 w-4" />
+              </a>
+              <a
+                href={profileData.contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn Profile"
+                className="rounded-full border border-stone-300 p-2.5 text-stone-500 transition-all hover:border-red-300 hover:text-red-700"
+              >
+                <LinkedinIcon className="h-4 w-4" />
+              </a>
+              <a
+                href={`mailto:${profileData.contact.email}`}
+                aria-label="Send Email"
+                className="rounded-full border border-stone-300 p-2.5 text-stone-500 transition-all hover:border-red-300 hover:text-red-700"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, x: 16 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mx-auto w-full max-w-[600px] lg:-mr-5"
+          >
+            <div className="pointer-events-none absolute inset-[10%] rounded-full bg-red-400/20 blur-[80px]" />
+            <div className="relative">
+              <div className="liquid-red-orbit pointer-events-none absolute inset-[8%] rounded-full border" />
+              <div className="liquid-red-orbit pointer-events-none absolute inset-[17%] rounded-full border" />
+              <div className="relative z-10">
+                <Hero3DCanvas />
+              </div>
+
+              <motion.div
+                animate={{ y: [0, -7, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+                className="absolute left-0 top-[20%] hidden items-center gap-2.5 rounded-2xl border border-red-100 bg-white/90 px-4 py-3 shadow-2xl shadow-red-900/10 backdrop-blur-xl sm:flex"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-red-50 text-red-600">
+                  <Code2 className="h-4 w-4" />
                 </span>
-                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.06]">
-                  {profileData.name}
-                </h1>
+                <span className="text-xs font-medium text-stone-700">Ideas → interfaces</span>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center gap-3"
+                animate={{ y: [0, 7, 0] }}
+                transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut", delay: 0.5 }}
+                className="absolute bottom-[18%] right-0 hidden items-center gap-2.5 rounded-2xl border border-red-100 bg-white/90 px-4 py-3 shadow-2xl shadow-red-900/10 backdrop-blur-xl sm:flex"
               >
-                <div className="h-0.5 w-8 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full" />
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 bg-clip-text text-transparent">
-                  {profileData.role}
-                </h2>
+                <Sparkles className="h-4 w-4 text-red-600" />
+                <span className="text-xs font-medium text-stone-700">Built with intention</span>
               </motion.div>
             </div>
 
-            {/* Supporting Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed"
-            >
-              {profileData.tagline}
-            </motion.p>
-
-            {/* CTAs with Magnetic Physics */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-3.5 pt-2"
-            >
-              <Magnetic strength={15}>
-                <a
-                  href="#projects"
-                  className="group inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all shadow-md shadow-indigo-600/25"
+            <div className="relative -mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {specialties.map(({ label, icon: Icon }, index) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.62 + index * 0.08 }}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white/75 px-3 py-2.5 text-[10px] font-medium text-stone-600 shadow-sm shadow-red-900/[0.03] sm:text-[11px]"
                 >
-                  <span>View My Projects</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Magnetic>
-
-              <Magnetic strength={15}>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-slate-800 bg-white border border-slate-200/90 rounded-xl hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all shadow-xs"
-                >
-                  <span>Contact Me</span>
-                </a>
-              </Magnetic>
-
-              <Magnetic strength={15}>
-                <a
-                  href="/cv/varathanathan-paavalan-cv.pdf"
-                  download="varathanathan-paavalan-cv.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-indigo-700 bg-indigo-50/80 border border-indigo-200/70 rounded-xl hover:bg-indigo-100/70 active:scale-95 transition-all shadow-xs"
-                >
-                  <Download className="w-4 h-4 text-indigo-600" />
-                  <span>Download CV</span>
-                </a>
-              </Magnetic>
-            </motion.div>
-
-            {/* Social Links & Stack Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="pt-4 border-t border-slate-200/70 flex flex-wrap items-center justify-between gap-4"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">
-                  Connect:
-                </span>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={profileData.contact.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-2xs"
-                    aria-label="GitHub Profile"
-                  >
-                    <GithubIcon className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={profileData.contact.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all shadow-2xs"
-                    aria-label="LinkedIn Profile"
-                  >
-                    <LinkedinIcon className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={`mailto:${profileData.contact.email}`}
-                    className="p-2.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all shadow-2xs"
-                    aria-label="Send Email"
-                  >
-                    <Mail className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Engineering Chips */}
-              <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 font-mono">
-                <Terminal className="w-3.5 h-3.5 text-indigo-500" />
-                <span>TypeScript</span>
-                <span className="text-slate-300">•</span>
-                <span>PHP</span>
-                <span className="text-slate-300">•</span>
-                <span>Next.js</span>
-                <span className="text-slate-300">•</span>
-                <span>MySQL</span>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right Column: Interactive 3D Holographic Object (5 cols) */}
-          <div className="lg:col-span-5 relative flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full relative"
-            >
-              {/* Outer Glow Halo */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-blue-500/20 rounded-3xl blur-xl opacity-70 pointer-events-none" />
-
-              <div className="relative rounded-3xl bg-white/80 border border-slate-200/90 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl overflow-hidden">
-                {/* 3D Canvas */}
-                <Hero3DCanvas />
-
-                {/* Subtle Interactive Label */}
-                <div className="absolute bottom-4 inset-x-4 flex items-center justify-between pointer-events-none px-4 py-2 rounded-xl bg-white/85 backdrop-blur-md border border-slate-200/70 text-xs text-slate-600 shadow-xs">
-                  <div className="flex items-center gap-2 font-mono text-[11px]">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                    <span className="font-semibold text-slate-800">
-                      3D Core Engine
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 font-mono">
-                    Drag to inspect
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-red-600/80" />
+                  <span>{label}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
 
-        {/* Engineering Metrics Ribbon */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 pt-8 border-t border-slate-200/60 grid grid-cols-2 lg:grid-cols-4 gap-4"
-        >
-          {metrics.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl bg-white/80 border border-slate-200/70 backdrop-blur-sm flex items-center gap-3 shadow-2xs hover:border-indigo-300 transition-colors"
-              >
-                <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
-                  <Icon className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-semibold text-slate-800 tracking-tight">
-                  {item.label}
-                </span>
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
+        <motion.a
+          href="#about"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="mt-12 flex flex-col items-center justify-center gap-2 text-slate-400"
+          transition={{ delay: 1, duration: 0.8 }}
+          className="mt-12 flex items-center justify-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-stone-400 transition-colors hover:text-stone-700"
         >
-          <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            Scroll to explore
-          </span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-          >
-            <ArrowDown className="w-4 h-4 text-indigo-500" />
-          </motion.div>
-        </motion.div>
+          Scroll to explore
+          <ArrowDown className="h-3.5 w-3.5 animate-bounce text-red-500/80" />
+        </motion.a>
       </div>
     </section>
   );
